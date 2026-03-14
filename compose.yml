@@ -1,0 +1,7 @@
+include:
+  - infra/compose.infra.yml
+  - analytics/compose.analytics.yml
+
+networks:
+  anal-network:
+    driver: bridge

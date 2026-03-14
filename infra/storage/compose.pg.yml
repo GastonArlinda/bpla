@@ -9,7 +9,7 @@ services:
     ports:
       - "5432"
     networks:
-      - comm-network
+      - anal-network
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:

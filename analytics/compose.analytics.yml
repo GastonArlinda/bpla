@@ -1,0 +1,11 @@
+services:
+  analytics:
+    build:
+      dockerfile: build/Dockerfile
+    networks:
+      - anal-network
+    volumes:
+      - ../.env:/.env
+    depends_on:
+      postgres:
+        condition: service_healthy
