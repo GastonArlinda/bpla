@@ -2,6 +2,7 @@ package main
 
 import (
 	"analytics/internal/config"
+	"analytics/internal/server"
 	"analytics/internal/service"
 	"analytics/internal/storage"
 	"analytics/pkg"
@@ -41,6 +42,9 @@ func main() {
 	for range 10 { go session.Create(ch) }
 	go session.Metrics(ctx)
 
+	srv := server.NewRestAPI(&cfg.Srv, met)
+	close := srv.CreateServer()
+
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
 	<-stop
@@ -48,4 +52,5 @@ func main() {
 	pg.Close()
 	kafka.Close()
 	cancel()
+	close()
 }

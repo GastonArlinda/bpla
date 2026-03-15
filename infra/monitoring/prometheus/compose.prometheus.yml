@@ -1,0 +1,13 @@
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    networks:
+      - anal-network
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheusdata:/prometheus
+    ports:
+      - "9090"
+
+volumes:
+  prometheusdata:
