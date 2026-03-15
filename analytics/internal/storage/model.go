@@ -1,7 +1,5 @@
 package storage
 
-import "time"
-
 type Metrics struct {
     TotalFlights           int       
     AvgDistanceMeters      float64   
@@ -10,6 +8,5 @@ type Metrics struct {
     FlightsLast30Sec       int       
     MaxSpeedMps            float64   
     AvgBatteryDrainPercent float64   
-    TotalDistanceMeters    float64   
-    CalculatedAt           time.Time 
+    TotalDistanceMeters    float64
 }

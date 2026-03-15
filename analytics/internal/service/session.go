@@ -69,8 +69,7 @@ func (ds *DroneSession) Metrics(ctx context.Context) {
 		model := storage.Metrics{}
 
 		err := ds.storagePg.QueryRow(ctxStorage,
-			"CALL get_flight_statistics($1, $2, $3, $4, $5, $6, $7, $8)",
-			nil, nil, nil, nil, nil, nil, nil, nil,
+			"SELECT * FROM get_flight_statistics()",
 		).Scan(
 			&model.TotalFlights,
 			&model.AvgDistanceMeters,
