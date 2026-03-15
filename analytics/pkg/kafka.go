@@ -14,7 +14,7 @@ type Consumer struct {
 type MessageHandler func([]byte) error
 
 func SetupKafka(brokers, topic, groupID string) (*kafka.Reader) {
-	fmt.Println(brokers)
+	fmt.Println([]string{brokers})
 
 	reader := kafka.NewReader(kafka.ReaderConfig{
 		Brokers:     []string{brokers},
