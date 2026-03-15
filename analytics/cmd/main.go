@@ -29,7 +29,7 @@ func main() {
 		return
 	}
 	met := storage.NewMetricsStorage()
-	kafka := pkg.SetuoKafka(cfg.Kafka.Brokers, cfg.Kafka.Topic, "storage-telemetry")
+	kafka := pkg.SetupKafka(cfg.Kafka.Brokers, cfg.Kafka.Topic, "storage-telemetry")
 
 	fetcher := service.NewFetcher(kafka)
 	session := service.NewSession(pg, met)

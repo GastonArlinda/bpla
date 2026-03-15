@@ -1,6 +1,7 @@
 package pkg
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/segmentio/kafka-go"
@@ -12,7 +13,9 @@ type Consumer struct {
 
 type MessageHandler func([]byte) error
 
-func SetuoKafka(brokers, topic, groupID string) (*kafka.Reader) {
+func SetupKafka(brokers, topic, groupID string) (*kafka.Reader) {
+	fmt.Println(brokers)
+
 	reader := kafka.NewReader(kafka.ReaderConfig{
 		Brokers:     []string{brokers},
 		Topic:       topic,
