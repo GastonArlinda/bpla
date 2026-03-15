@@ -1,6 +1,7 @@
 #include"TelemetryGenerator.h"
 #include <chrono>
 
+
 TelemetryGenerator::TelemetryGenerator() : rng(std::random_device{}()) {}
 
 TelemetryPoint TelemetryGenerator::nextPoint() {
@@ -19,7 +20,7 @@ TelemetryPoint TelemetryGenerator::nextPoint() {
 
     current_altitude += d_alt(rng);
     if (current_altitude < 40.0) current_altitude = 40.0;
-    p.altitute = current_altitude;
+    p.altitude = current_altitude;
 
     p.speed = d_speed(rng);
     p.roll = d_roll(rng);

@@ -1,6 +1,7 @@
 include:
   - infra/compose.infra.yml
   - analytics/compose.analytics.yml
+  - bpla moy/compose.bpla.yml
 
 networks:
   anal-network:

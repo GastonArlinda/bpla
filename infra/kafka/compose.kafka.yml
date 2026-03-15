@@ -28,7 +28,7 @@ services:
       
       CLUSTER_ID: ${KAFKA_CLUSTER_ID}
     healthcheck:
-      test: ["CMD-SHELL", "kafka-topics --bootstrap-server localhost:9092 --list || exit 1"]
+      test: ["CMD-SHELL", "kafka-topics --bootstrap-server kafka:9092 --list || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 5

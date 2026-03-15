@@ -36,6 +36,8 @@ func (kf *KafkaFetcher) Fetch(ctx context.Context, ch chan<- SessionModel) {
 			continue
 		}
 
+		fmt.Println(msg.Value);
+
 		model := SessionModel{}
 
 		if err := json.Unmarshal(msg.Value, &model); err != nil {

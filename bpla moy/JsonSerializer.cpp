@@ -16,14 +16,14 @@ std::string iso8601(const std::chrono::system_clock::time_point& tp) {
 std::string toJson(const std::string& session_uuid, const TelemetryPoint& p) {
     std::ostringstream oss;
     oss << "{"
-        << "\"id\":\""          << session_uuid << "\","
-        << "\"timestamp\":\""   << iso8601(p.timestamp) << "\","
-        << "\"latitude\":\""    << std::fixed << std::setprecision(6) << p.latitude << ","
-        << "\"longitude\":\""   << std::fixed << std::setprecision(6) << p.longitude << ","
-        << "\"altitude\":\""    << std::setprecision(2) << p.altitute << ","
-        << "\"speed\":\""       << p.speed << ","
-        << "\"roll\":\""        << p.roll << ","
-        << "\"battery\":\""     << p.battery
+        << "\"id\":\""         << session_uuid << "\","               // кавычки вокруг строки
+        << "\"timestamp\":\""  << iso8601(p.timestamp) << "\","       // кавычки вокруг строки
+        << "\"latitude\":"     << std::fixed << std::setprecision(6) << p.latitude << ","
+        << "\"longitude\":"    << std::fixed << std::setprecision(6) << p.longitude << ","
+        << "\"altitude\":"     << std::setprecision(2) << p.altitude << ","   // исправлена опечатка
+        << "\"speed\":"        << p.speed << ","
+        << "\"roll\":"         << p.roll << ","
+        << "\"battery\":"      << p.battery
         << "}";
     return oss.str();
 }

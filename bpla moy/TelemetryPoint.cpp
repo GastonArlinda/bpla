@@ -12,7 +12,7 @@ std::string TelemetryPoint::toString() const {
         << std::setfill('0') << std::setw(3) << ms.count() << "Z "
         << "lat=" << std::fixed << std::setprecision(6) << latitude << " "
         << "lon= " << longitude << " "
-        << "alt=" << std::setprecision(1) << altitute << " "
+        << "alt=" << std::setprecision(1) << altitude << " "
         << "spd=" << speed << " "
         << "roll=" << roll << " "
         << "batt=" << battery;

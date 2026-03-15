@@ -1,0 +1,9 @@
+services:
+  producer:
+    build:
+      dockerfile: Dockerfile
+    networks:
+      - anal-network
+    depends_on:
+      kafka:
+        condition: service_healthy

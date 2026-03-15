@@ -1,17 +1,47 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <random>
+#include <iomanip>
 // #include <fstream>
 #include "TelemetryGenerator.h"
 #include "JsonSerializer.h"
 #include "KafkaProducer.h"
 
-std::string make_session_uuid() {
-    return "sess-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count());
+std::string generate_uuid() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, 15);
+
+    std::stringstream ss;
+    ss << std::hex << std::setfill('0');
+
+    // 8 символов
+    for (int i = 0; i < 8; ++i) ss << dis(gen);
+    ss << "-";
+
+    // 4 символа
+    for (int i = 0; i < 4; ++i) ss << dis(gen);
+    ss << "-";
+
+    // 4 символа (версия 4: 0100xxxx)
+    ss << "4";  // версия 4
+    for (int i = 0; i < 3; ++i) ss << dis(gen);
+    ss << "-";
+
+    // 4 символа (вариант: 10xx xxxx)
+    ss << (dis(gen) % 4 + 8);  // 8,9,a,b
+    for (int i = 0; i < 3; ++i) ss << dis(gen);
+    ss << "-";
+
+    // 12 символов
+    for (int i = 0; i < 12; ++i) ss << dis(gen);
+
+    return ss.str();
 }
 
 int main() {
-    std::string brokers = "localhost:9092";
+    std::string brokers = "kafka:9092";
     std::string topic = "bpla-telemetry";
 
     KafkaProducer kafka(brokers, topic);
@@ -21,7 +51,7 @@ int main() {
     }
 
     TelemetryGenerator gen;
-    std::string session = make_session_uuid();
+    std::string session = generate_uuid();
 
     std::cout << "Запуск генерации и отправки в Kafka\n";
     std::cout << "Сессия: " << session << "\n";
