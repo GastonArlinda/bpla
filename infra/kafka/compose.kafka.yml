@@ -4,6 +4,8 @@ services:
     ports:
       - "9092:9092"
       - "9093:9093"
+    networks:
+      - anal-network
     environment:
       KAFKA_NODE_ID: ${KAFKA_NODE_ID}
       KAFKA_PROCESS_ROLES: ${KAFKA_PROCESS_ROLES}
