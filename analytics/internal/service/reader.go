@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"fmt"
 	"math/rand/v2"
 	"time"
 )
@@ -24,8 +25,11 @@ func (kf *KafkaFetcher) Fetch(ctx context.Context, ch chan<- SessionModel) {
 
 		model, err := generateMockData(ctxKafka)
 		if err != nil {
+			fmt.Println("err")
 			continue
 		}
+		fmt.Printf("Fetching data %s\n", model.SessionID)
+
 		ch <- model
 
 		select {

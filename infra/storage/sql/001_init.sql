@@ -9,3 +9,5 @@ CREATE TABLE session
   roll NUMERIC NOT NULL,
   battery NUMERIC NOT NULL
 );
+
+CREATE INDEX SID ON session(session_id);

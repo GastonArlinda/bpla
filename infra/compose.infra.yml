@@ -1,3 +1,4 @@
 include:
   - storage/compose.pg.yml
   - kafka/compose.kafka.yml
+  - geo-pgadmin/compose.admin.yml

@@ -15,6 +15,8 @@ RUN go build -o /app/bin ./cmd/main.go
 
 FROM alpine:3.21
 
+RUN apk --no-cache add curl
+
 COPY --from=build /app/bin /app/bin
 
 ENTRYPOINT ["/app/bin"]

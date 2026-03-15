@@ -1,10 +1,12 @@
-package cmd
+package main
 
 import (
 	"analytics/internal/config"
 	"analytics/internal/service"
+	"analytics/internal/storage"
 	"analytics/pkg"
 	"context"
+	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
@@ -14,6 +16,8 @@ import (
 const path = "../.env"
 
 func main() {
+	fmt.Println("Starting service")
+
 	cfg := config.MustLoad(path)
 
 	ctxPg, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -21,17 +25,20 @@ func main() {
 
 	pg, err := pkg.SetupPostgres(ctxPg, cfg.Storage.URL)
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
+	met := storage.NewMetricsStorage()
 
 	fetcher := service.NewFetcher()
-	session := service.NewSession(pg)
+	session := service.NewSession(pg, met)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	ch := make(chan service.SessionModel, 1000)
 
-	fetcher.Fetch(ctx, ch)
-	session.Create(ch)
+	for range 5 { go fetcher.Fetch(ctx, ch) }
+	for range 10 { go session.Create(ch) }
+	go session.Metrics(ctx)
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
