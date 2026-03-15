@@ -28,7 +28,7 @@ type Storage struct {
 }
 
 type Kafka struct {
-	Brokers string `env:"KAFKA_BROKERS" env-default:"localhost:9092"`
+	Brokers string `env:"KAFKA_BROKERS" env-default:"kafka:9092"`
 	Topic   string `env:"KAFKA_TOPIC" env-default:"drone-sessions"`
 	GroupID string `env:"KAFKA_GROUP_ID" env-default:"analytics-group"`
 }
