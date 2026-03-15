@@ -2,7 +2,7 @@ CREATE OR REPLACE FUNCTION get_flight_statistics()
 RETURNS TABLE (
     total_flights INTEGER,
     avg_distance_meters NUMERIC,
-    max_distance_meters NUMERIC,
+    max_flight_distance_meters NUMERIC,
     max_flight_duration_seconds INTEGER,
     flights_last_30sec INTEGER,
     max_speed_mps NUMERIC,
@@ -35,7 +35,6 @@ BEGIN
         SELECT 
             session_id,
             COALESCE(SUM(segment_distance), 0) as total_distance,
-            COALESCE(MAX(segment_distance), 0) as max_segment_distance,
             EXTRACT(EPOCH FROM (MAX(session_end) - MIN(session_start))) as duration,
             COALESCE(MAX(speed), 0) as max_speed,
             MIN(session_start) as start_time,
@@ -47,7 +46,7 @@ BEGIN
     SELECT 
         COUNT(DISTINCT session_id)::INTEGER as total_flights,
         ROUND(COALESCE(AVG(total_distance), 0)::NUMERIC, 2) as avg_distance_meters,
-        ROUND(COALESCE(MAX(max_segment_distance), 0)::NUMERIC, 2) as max_distance_meters,
+        ROUND(COALESCE(MAX(total_distance), 0)::NUMERIC, 2) as max_flight_distance_meters,
         COALESCE(MAX(duration), 0)::INTEGER as max_flight_duration_seconds,
         COUNT(DISTINCT CASE 
             WHEN start_time > NOW() - INTERVAL '30 seconds' 
