@@ -11,6 +11,7 @@ type Config struct {
 	Env     string `env:"LEVEL"`
 	Srv     Server
 	Storage Storage
+	Kafka   Kafka
 }
 
 type Server struct {
@@ -24,6 +25,12 @@ type Server struct {
 type Storage struct {
 	Type string `env:"DB_TYPE"`
 	URL  string `env:"DB_URL"`
+}
+
+type Kafka struct {
+	Brokers string `env:"KAFKA_BROKERS" env-default:"localhost:9092"`
+	Topic   string `env:"KAFKA_TOPIC" env-default:"drone-sessions"`
+	GroupID string `env:"KAFKA_GROUP_ID" env-default:"analytics-group"`
 }
 
 func MustLoad(path string) *Config {

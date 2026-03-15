@@ -29,8 +29,9 @@ func main() {
 		return
 	}
 	met := storage.NewMetricsStorage()
+	kafka := pkg.SetuoKafka(cfg.Kafka.Brokers, cfg.Kafka.Topic, "storage-telemetry")
 
-	fetcher := service.NewFetcher()
+	fetcher := service.NewFetcher(kafka)
 	session := service.NewSession(pg, met)
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -45,5 +46,6 @@ func main() {
 	<-stop
 
 	pg.Close()
+	kafka.Close()
 	cancel()
 }

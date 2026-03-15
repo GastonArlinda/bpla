@@ -2,20 +2,27 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"math/rand/v2"
 	"time"
+
+	"github.com/segmentio/kafka-go"
 )
 
-type Fetcher interface{
+type Fetcher interface {
 	Fetch(ctx context.Context, ch chan<- SessionModel)
 }
 
-type KafkaFetcher struct{}
+type KafkaFetcher struct {
+	kafka *kafka.Reader
+}
 
-func NewFetcher() Fetcher {
-	return &KafkaFetcher{}
+func NewFetcher(kafka *kafka.Reader) (Fetcher) {
+	return &KafkaFetcher{
+		kafka: kafka,
+	}
 }
 
 func (kf *KafkaFetcher) Fetch(ctx context.Context, ch chan<- SessionModel) {
@@ -23,11 +30,19 @@ func (kf *KafkaFetcher) Fetch(ctx context.Context, ch chan<- SessionModel) {
 		ctxKafka, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 		defer cancel()
 
-		model, err := generateMockData(ctxKafka)
+		msg, err := kf.kafka.ReadMessage(ctxKafka)
 		if err != nil {
-			fmt.Println("err")
+			fmt.Printf("Error reading message: %v\n", err)
 			continue
 		}
+
+		model := SessionModel{}
+
+		if err := json.Unmarshal(msg.Value, &model); err != nil {
+			fmt.Printf("Error parse json %s\n", model.SessionID)
+			continue
+		}
+
 		fmt.Printf("Fetching data %s\n", model.SessionID)
 
 		ch <- model
@@ -41,9 +56,9 @@ func (kf *KafkaFetcher) Fetch(ctx context.Context, ch chan<- SessionModel) {
 }
 
 func generateMockData(ctx context.Context) (SessionModel, error) {
-	time.Sleep(2*time.Second)
+	time.Sleep(2 * time.Second)
 
-	select{
+	select {
 	case <-ctx.Done():
 		return SessionModel{}, errors.New("timeout")
 	default:

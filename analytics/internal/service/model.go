@@ -3,12 +3,12 @@ package service
 import "time"
 
 type SessionModel struct {
-	SessionID string
-	Timestamp time.Time
-	Latitude  float64
-	Longitude float64
-	Altitude  float64
-	Speed     float64
-	Roll      float64
-	Battery   float64
+	SessionID string    `json:"id"`
+	Timestamp time.Time `json:"timestamp"`
+	Latitude  float64   `json:"latitude"`
+	Longitude float64   `json:"longitude"`
+	Altitude  float64   `json:"altitude"`
+	Speed     float64   `json:"speed"`
+	Roll      float64   `json:"roll"`
+	Battery   float64   `json:"battery"`
 }
